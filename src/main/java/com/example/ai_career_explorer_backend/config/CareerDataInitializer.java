@@ -11,12 +11,14 @@ import com.example.ai_career_explorer_backend.repository.SkillRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class CareerDataInitializer {
 
-    @Bean
-    CommandLineRunner initializeCareerData(
+	@Bean
+	@Transactional
+	CommandLineRunner initializeCareerData(
             CareerRepository careerRepository,
             SkillRepository skillRepository,
             EducationProgramRepository educationProgramRepository) {
@@ -1795,6 +1797,12 @@ public class CareerDataInitializer {
                     "Financial Analyst → Investment Analyst → Senior Investment Analyst → Portfolio Manager"
             );
 
+            associateSoftwareDeveloperData(
+                    careerRepository,
+                    educationProgramRepository,
+                    skillRepository
+            );
+
             System.out.println(
                     "Career and skill master data initialization completed."
             );
@@ -1891,5 +1899,86 @@ public class CareerDataInitializer {
         );
 
         repository.save(career);
+    }
+    
+    @Transactional
+    private void associateSoftwareDeveloperData(
+            CareerRepository careerRepository,
+            EducationProgramRepository educationProgramRepository,
+            SkillRepository skillRepository) {
+
+        Career softwareDeveloper = careerRepository
+                .findByTitleContainingIgnoreCase("Software Developer")
+                .stream()
+                .filter(career ->
+                        career.getTitle() != null
+                                && career.getTitle().equalsIgnoreCase("Software Developer"))
+                .findFirst()
+                .orElse(null);
+
+        if (softwareDeveloper == null) {
+            System.out.println("Software Developer career not found.");
+            return;
+        }
+
+        String[] educationProgramNames = {
+                "B.Tech Computer Science and Engineering",
+                "Bachelor of Computer Applications",
+                "B.Sc Computer Science",
+                "Diploma in Computer Engineering"
+        };
+
+        for (String programName : educationProgramNames) {
+
+            educationProgramRepository
+                    .findByNameContainingIgnoreCase(programName)
+                    .stream()
+                    .filter(program ->
+                            program.getName() != null
+                                    && program.getName().equalsIgnoreCase(programName))
+                    .findFirst()
+                    .ifPresent(softwareDeveloper::addEducationProgram);
+        }
+
+        String[] requiredSkillNames = {
+
+                "Programming",
+                "Problem Solving",
+                "Logical Thinking",
+                "Communication",
+                "Debugging",
+                "Analytical Thinking",
+                "Attention to Detail",
+                "Persistence",
+                "Web Development",
+                "Frontend Development",
+                "Backend Development",
+                "Software Testing",
+                "Algorithms",
+                "Data Structures",
+                "Git",
+                "API Development"
+        };
+
+        for (String skillName : requiredSkillNames) {
+
+            skillRepository
+                    .findByNameIgnoreCase(skillName)
+                    .ifPresent(skill -> {
+
+                        softwareDeveloper.addRequiredSkill(skill);
+
+                        System.out.println(
+                                "Added skill '" + skillName +
+                                "' to Software Developer"
+                        );
+                    });
+        }
+
+        careerRepository.saveAndFlush(softwareDeveloper);
+
+        System.out.println(
+                "Software Developer skill relationships saved."
+        );
     }
 }

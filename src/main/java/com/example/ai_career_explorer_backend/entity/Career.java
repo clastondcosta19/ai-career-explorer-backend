@@ -47,7 +47,7 @@ public class Career {
     private String careerPaths;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "career_education_programs",
         joinColumns = @JoinColumn(name = "career_id"),
@@ -56,7 +56,7 @@ public class Career {
     private Set<EducationProgram> educationPrograms = new HashSet<>();
 
    
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "career_skills",
         joinColumns = @JoinColumn(name = "career_id"),
