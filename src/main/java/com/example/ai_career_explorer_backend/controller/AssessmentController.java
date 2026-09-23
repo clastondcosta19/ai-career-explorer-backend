@@ -11,7 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/assessment")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(
+	    origins = {
+	        "http://localhost:4200",
+	        "https://ai-career-explorers.netlify.app"
+	    }
+	)
 public class AssessmentController {
 
     private final AssessmentService assessmentService;
