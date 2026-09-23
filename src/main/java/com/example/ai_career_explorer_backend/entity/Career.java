@@ -46,10 +46,7 @@ public class Career {
     @Column(name = "career_paths", length = 3000)
     private String careerPaths;
 
-    /*
-     * A career can be reached through multiple education programs.
-     * An education program can also lead to multiple careers.
-     */
+
     @ManyToMany
     @JoinTable(
         name = "career_education_programs",

@@ -48,10 +48,6 @@ public class CareerController {
         );
     }
 
-    // =========================================================
-    // GET CAREERS BY CAREER FAMILY
-    // =========================================================
-
     @GetMapping("/family/{careerFamily}")
     public ResponseEntity<List<Career>> getCareersByFamily(
             @PathVariable String careerFamily) {
@@ -60,10 +56,6 @@ public class CareerController {
                 careerService.getCareersByFamily(careerFamily)
         );
     }
-
-    // =========================================================
-    // GET CAREERS BY ROLE
-    // =========================================================
 
     @GetMapping("/role/{role}")
     public ResponseEntity<List<Career>> getCareersByRole(
@@ -74,9 +66,6 @@ public class CareerController {
         );
     }
 
-    // =========================================================
-    // GET CAREERS BY DOMAIN + CAREER FAMILY
-    // =========================================================
 
     @GetMapping("/domain/{domain}/family/{careerFamily}")
     public ResponseEntity<List<Career>> getCareersByDomainAndFamily(
@@ -91,10 +80,6 @@ public class CareerController {
         );
     }
 
-    // =========================================================
-    // GET CAREER BY ID
-    // =========================================================
-
     @GetMapping("/{id}")
     public ResponseEntity<Career> getCareerById(
             @PathVariable Long id) {
@@ -104,10 +89,6 @@ public class CareerController {
         );
     }
 
-    // =========================================================
-    // CREATE NEW CAREER
-    // =========================================================
-
     @PostMapping
     public ResponseEntity<Career> createCareer(
             @RequestBody Career career) {
@@ -116,10 +97,6 @@ public class CareerController {
                 careerService.saveCareer(career)
         );
     }
-
-    // =========================================================
-    // UPDATE EXISTING CAREER
-    // =========================================================
 
     @PutMapping("/{id}")
     public ResponseEntity<Career> updateCareer(
