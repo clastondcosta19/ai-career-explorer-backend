@@ -1,9 +1,13 @@
 package com.example.ai_career_explorer_backend.config;
 
 import com.example.ai_career_explorer_backend.entity.Career;
+import com.example.ai_career_explorer_backend.entity.EducationProgram;
 import com.example.ai_career_explorer_backend.entity.Skill;
+
 import com.example.ai_career_explorer_backend.repository.CareerRepository;
+import com.example.ai_career_explorer_backend.repository.EducationProgramRepository;
 import com.example.ai_career_explorer_backend.repository.SkillRepository;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +18,58 @@ public class CareerDataInitializer {
     @Bean
     CommandLineRunner initializeCareerData(
             CareerRepository careerRepository,
-            SkillRepository skillRepository) {
+            SkillRepository skillRepository,
+            EducationProgramRepository educationProgramRepository) {
 
         return args -> {
+
+            addEducationProgram(
+                    educationProgramRepository,
+                    "B.Tech Computer Science and Engineering",
+                    "Undergraduate",
+                    "Computer Science",
+                    "Engineering degree focused on computer science, software development and computing systems.",
+                    "After 12th",
+                    "Typically requires 12th with relevant science subjects; exact requirements vary by institution.",
+                    "Mathematics, Physics, Computer Science",
+                    "4 years"
+            );
+
+            addEducationProgram(
+                    educationProgramRepository,
+                    "Bachelor of Computer Applications",
+                    "Undergraduate",
+                    "Computer Applications",
+                    "Undergraduate program focused on computer applications, programming and software development.",
+                    "After 12th",
+                    "Completion of 12th; subject requirements vary by institution.",
+                    "Computer Science, Mathematics, Programming",
+                    "3 years"
+            );
+
+            addEducationProgram(
+                    educationProgramRepository,
+                    "B.Sc Computer Science",
+                    "Undergraduate",
+                    "Computer Science",
+                    "Undergraduate program covering computer science, programming and computing concepts.",
+                    "After 12th",
+                    "12th with relevant subjects; exact requirements vary by institution.",
+                    "Mathematics, Computer Science",
+                    "3 years"
+            );
+
+            addEducationProgram(
+                    educationProgramRepository,
+                    "Diploma in Computer Engineering",
+                    "Diploma",
+                    "Computer Engineering",
+                    "Diploma program covering computer engineering, programming and technical computing skills.",
+                    "After 10th",
+                    "Completion of 10th; exact requirements vary by institution and state.",
+                    "Mathematics, Science, Computer Engineering",
+                    "3 years"
+            );
 
             addSkill(
                     skillRepository,
@@ -1755,12 +1808,43 @@ public class CareerDataInitializer {
             String category) {
 
         if (repository.findByNameIgnoreCase(name).isEmpty()) {
-
             repository.save(
                     new Skill(
                             name,
                             description,
                             category
+                    )
+            );
+        }
+    }
+
+    private void addEducationProgram(
+            EducationProgramRepository repository,
+            String name,
+            String level,
+            String field,
+            String description,
+            String entryLevel,
+            String eligibility,
+            String subjects,
+            String typicalDuration) {
+
+        if (repository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .noneMatch(existingProgram ->
+                        existingProgram.getName() != null
+                                && existingProgram.getName().equalsIgnoreCase(name))) {
+
+            repository.save(
+                    new EducationProgram(
+                            name,
+                            level,
+                            field,
+                            description,
+                            entryLevel,
+                            eligibility,
+                            subjects,
+                            typicalDuration
                     )
             );
         }
