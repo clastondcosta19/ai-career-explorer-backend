@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public interface CareerRepository extends JpaRepository<Career, Long> {
 
+    @Override
+    @EntityGraph(attributePaths = {"educationPrograms", "requiredSkills"})
+    List<Career> findAll();
+
     List<Career> findByTitleContainingIgnoreCase(String title);
 
     List<Career> findByDomainIgnoreCase(String domain);
