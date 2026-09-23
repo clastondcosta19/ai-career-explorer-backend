@@ -942,18 +942,6 @@ public class CareerDataInitializer {
                     "Hospitality & Tourism"
             );
 
-
-            /*
-             * Careers
-             *
-             * Careers are inserted by ID only when they do not
-             * already exist.
-             *
-             * The existing career_skills and
-             * career_education_programs relationships are not
-             * modified here.
-             */
-
             addCareer(
                     careerRepository,
                     1L,
@@ -1793,7 +1781,14 @@ public class CareerDataInitializer {
             String strengths,
             String careerPaths) {
 
-        if (repository.existsById(id)) {
+        boolean careerExists = repository
+                .findByTitleContainingIgnoreCase(title)
+                .stream()
+                .anyMatch(existingCareer ->
+                        existingCareer.getTitle() != null
+                                && existingCareer.getTitle().equalsIgnoreCase(title));
+
+        if (careerExists) {
             return;
         }
 
@@ -1810,8 +1805,6 @@ public class CareerDataInitializer {
                 strengths,
                 careerPaths
         );
-
-        career.setId(id);
 
         repository.save(career);
     }
