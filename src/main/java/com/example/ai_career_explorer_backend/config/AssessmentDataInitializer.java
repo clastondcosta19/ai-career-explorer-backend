@@ -24,7 +24,6 @@ public class AssessmentDataInitializer {
 
         return args -> {
 
-            // Prevent duplicate questions
             if (questionRepository.count() > 0) {
                 System.out.println("Assessment questions already exist. Skipping assessment initialization.");
                 return;
