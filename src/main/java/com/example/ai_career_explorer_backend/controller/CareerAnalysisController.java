@@ -10,7 +10,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/career-analysis")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(
+        origins = {
+                "http://localhost:4200",
+                "https://ai-career-explorers.netlify.app"
+        }
+)
 public class CareerAnalysisController {
 
     private final CareerAnalysisService analysisService;
@@ -21,7 +26,6 @@ public class CareerAnalysisController {
         this.analysisService = analysisService;
     }
 
-  
     @PostMapping("/{userId}/career/{careerId}")
     public ResponseEntity<CareerAnalysis> analyzeCareer(
             @PathVariable Long userId,
@@ -44,7 +48,6 @@ public class CareerAnalysisController {
         );
     }
 
-  
     @GetMapping("/{userId}")
     public ResponseEntity<List<CareerAnalysis>> getStudentAnalyses(
             @PathVariable Long userId) {
@@ -54,7 +57,6 @@ public class CareerAnalysisController {
         );
     }
 
-  
     @GetMapping("/{userId}/career/{careerId}")
     public ResponseEntity<CareerAnalysis> getStudentCareerAnalysis(
             @PathVariable Long userId,
